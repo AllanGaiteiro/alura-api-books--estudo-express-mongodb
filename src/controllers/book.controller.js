@@ -1,4 +1,4 @@
-import Book from "../models/books.model.js";
+import Book from "../models/book.model.js";
 
 class BookController {
   static async find(req, res) {
