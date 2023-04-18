@@ -8,8 +8,10 @@ const routes = (app) => {
   });
 
   app.use(express.json());
-  app.use("/book", Book);
-  app.use("/author", Author);
+
+  // APIs
+  app.use("/api/book", Book);
+  app.use("/api/author", Author);
 };
 
 export default routes;
