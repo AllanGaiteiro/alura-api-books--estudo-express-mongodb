@@ -1,9 +1,9 @@
-import Boocks from "../models/books.model.js";
+import Book from "../models/books.model.js";
 
 class BookController {
   static async find(req, res) {
     try {
-      const livros = await Boocks.find();
+      const livros = await Book.find();
       res.status(200).json(livros);
     } catch (error) {
       console.error(error);
@@ -12,10 +12,10 @@ class BookController {
   }
 
   static async findById(req, res) {
-    const id = req.params.id;
+    const { id } = req.params;
 
     try {
-      const livro = await Boocks.findById(id);
+      const livro = await Book.findById(id);
       if (livro) {
         res.status(200).send(livro);
       } else {
@@ -28,12 +28,12 @@ class BookController {
   }
 
   static async add(req, res) {
-    let livro = new Boocks(req.body);
+    let book = new Book(req.body);
 
     try {
-      const livroSaved = await livro.save();
+      const bookSaved = await book.save();
       console.log("Document saved!");
-      res.status(201).send(livroSaved);
+      res.status(201).send(bookSaved);
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: error.message });
@@ -41,11 +41,11 @@ class BookController {
   }
 
   static async update(req, res) {
-    const id = req.params.id;
+    const { id } = req.params;
     const updates = req.body;
 
     try {
-      const livroAtualizado = await Boocks.findByIdAndUpdate(id, updates, {
+      const livroAtualizado = await Book.findByIdAndUpdate(id, updates, {
         new: true,
       });
       if (livroAtualizado) {
@@ -60,11 +60,11 @@ class BookController {
   }
 
   static async delete(req, res) {
-    const id = req.params.id;
+    const { id } = req.params;
 
     try {
-      const livroExcluido = await Boocks.findByIdAndDelete(id);
-      if (livroExcluido) {
+      const bookdeleted = await Book.findByIdAndDelete(id);
+      if (bookdeleted) {
         res.status(200).send({ message: "Livro removido com sucesso" });
       } else {
         res.status(400).send({ message: `Id do livro ${id} não localizado` });
@@ -74,6 +74,14 @@ class BookController {
       res.status(500).send({ message: error.message });
     }
   }
+
+  static findByPublishingCompany = (req, res) => {
+    const { publishing_company: publishingCompany } = req.query;
+
+    Book.find({ publishingCompany }, {}, (err, livros) => {
+      res.status(200).send(livros);
+    });
+  };
 }
 
 export default BookController;
