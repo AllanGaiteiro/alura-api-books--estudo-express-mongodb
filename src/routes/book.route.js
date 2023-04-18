@@ -4,6 +4,7 @@ import BookController from "../controllers/book.controller.js";
 const router = express.Router();
 router
   .get("/", BookController.find)
+  .get("/search", BookController.findByPublishingCompany)
   .get("/:id", BookController.findById)
   .post("/", BookController.add)
   .put("/:id", BookController.update)
